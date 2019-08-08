@@ -39,18 +39,38 @@
 
         function playRound(playerSelection, computerSelection) {
             playerSelection = capitalize(playerSelection);
-            if (isPlayerWin(playerSelection, computerSelection)) return "You win! " + playerSelection + " beats " + computerSelection + ".";
-            else if (isTie(playerSelection, computerSelection)) return "Tie! " + playerSelection + " ties " + computerSelection + ".";
-            return "You lose! " + computerSelection + " beats " + playerSelection + ".";
+            if (isPlayerWin(playerSelection, computerSelection)) return "win";
+            else if (isTie(playerSelection, computerSelection)) return "tie";
+            return "lose";
         }
 
         function game() {
             let playerSelection;
+            let numPlayerWins = 0;
+            let numCPUWins = 0;
             for (let i = 0; i < 5; i++) {
                 playerSelection = prompt("Round " + (i+1) + ": Please enter 'Rock', 'Paper', or 'Scissors'.");
-                if (playerSelection == null || playerSelection.match(/rock|paper|scissors/ig) == null) continue;
-                alert(playRound(playerSelection, computerPlay()));
+                if (playerSelection == null) break;
+                if (playerSelection.match(/rock|paper|scissors/i) == null) continue;
+                playerSelection = capitalize(playerSelection);
+                const computerSelection = computerPlay();
+                const result = playRound(playerSelection, computerSelection);
+                switch (result) {
+                    case "win": alert("You won! " + playerSelection + " beats " + computerSelection);
+                        numPlayerWins++;
+                        break;
+                    case "tie": alert("Tie! " + playerSelection + " ties " + computerSelection);
+                        break;
+                    case "lose": alert("You lost! " + computerSelection + " beats " + playerSelection);
+                        numCPUWins++;
+                        break;
+                }
             }
+            let endResult;
+            if (numPlayerWins>numCPUWins) endResult = "won :)";
+            else if (numCPUWins>numPlayerWins) endResult = "lost :(";
+            else endResult = "tied :|"; 
+            alert("Your score: " + numPlayerWins + ", CPU score: " + numCPUWins + ". You " + endResult);
         }
 
         game();
