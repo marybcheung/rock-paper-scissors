@@ -1,3 +1,11 @@
+var buttons = document.querySelectorAll("button");
+var leftEmoji = document.querySelector("#left-emoji");
+var rightEmoji = document.querySelector("#right-emoji");
+var emojis = document.querySelectorAll(".emoji");
+var playerScoreCard = document.querySelector("#left-score");
+var computerScoreCard = document.querySelector("#right-score");
+var p = document.querySelector("p");
+
 // randomly returns 0, 1, or 2
 function rNG3() {
     return Math.floor(Math.random()*3);
@@ -6,23 +14,18 @@ function rNG3() {
 // randomly returns "Rock", "Paper", or "Scissors"
 function computerPlay() {
     switch (rNG3()) {
-        case 0: return "Rock";
-        case 1: return "Paper";
-        case 2: return "Scissors";
+        case 0: return "rock";
+        case 1: return "paper";
+        case 2: return "scissors";
     }
-}
-
-function capitalize(str) {
-    str = str.toLowerCase();
-    return str.replace(str.substring(0,1), str.substring(0,1).toUpperCase());
 }
 
 // returns true if and only if player wins, returns false if player loses or ties
 function isPlayerWin(playerSelection, computerSelection) {
     switch(playerSelection) {
-        case "Rock": return computerSelection == "Scissors";
-        case "Paper": return computerSelection == "Rock";
-        case "Scissors": return computerSelection == "Paper";
+        case "rock": return computerSelection == "scissors";
+        case "paper": return computerSelection == "rock";
+        case "scissors": return computerSelection == "paper";
     }
 }
 
@@ -30,65 +33,67 @@ function isTie(playerSelection, computerSelection) {
     return playerSelection == computerSelection;
 }
 
-function playRound(playerSelection, computerSelection) {
-    playerSelection = capitalize(playerSelection);
+function playRoundHelper(playerSelection, computerSelection) {
     if (isPlayerWin(playerSelection, computerSelection)) return "win";
     else if (isTie(playerSelection, computerSelection)) return "tie";
     return "lose";
 }
 
-function handleEndResult(numPlayerWins, numCPUWins) {
-    let endResult;
-    if (numPlayerWins>numCPUWins) endResult = "won :)";
-    else if (numCPUWins>numPlayerWins) endResult = "lost :(";
-    else endResult = "tied :|"; 
-    alert("Your score: " + numPlayerWins + ", CPU score: " + numCPUWins + ". You " + endResult);
-}
-
-function game() {
-    let playerSelection;
-    let numPlayerWins = 0;
-    let numCPUWins = 0;
-    for (let i = 0; i < 5; i++) {
-        playerSelection = prompt("Round " + (i+1) + ": Please enter 'Rock', 'Paper', or 'Scissors'.");
-        if (playerSelection == null) break;
-        if (playerSelection.match(/rock|paper|scissors/i) == null) continue;
-        playerSelection = capitalize(playerSelection);
-        const computerSelection = computerPlay();
-        const result = playRound(playerSelection, computerSelection);
-        switch (result) {
-            case "win": alert("You won! " + playerSelection + " beats " + computerSelection);
-                numPlayerWins++;
-                break;
-            case "tie": alert("Tie! " + playerSelection + " ties " + computerSelection);
-                break;
-            case "lose": alert("You lost! " + computerSelection + " beats " + playerSelection);
-                numCPUWins++;
-                break;
-        }
+function handleResult() {
+    const playerScore = Number(playerScoreCard.textContent);
+    const computerScore = Number(computerScoreCard.textContent);
+    if (playerScore == 5 || computerScore == 5) {
+        if (playerScore > computerScore)  p.textContent = "You won! ";
+        else p.textContent = "You lost. ";
+        p.textContent += " Refresh to play again."
+        buttons.forEach((button) => button.style.display = "none");
     }
-    handleEndResult(numPlayerWins, numCPUWins);
 }
 
-var buttons = document.querySelectorAll("button");
-var leftEmoji = document.querySelector("#left-emoji");
-buttons.forEach((button) => {
-    button.addEventListener("mouseover", () => {
-        var id = button.id;
-        switch (id) {
-            case "rock": leftEmoji.innerHTML = "✊";
-            break;
-            case "paper": leftEmoji.innerHTML = "✋";
-            break;
-            case "scissors": leftEmoji.innerHTML = "✌️";
-            break;
-        }
-        leftEmoji.classList.add("visible");
-    });
+function addPoint(scoreCard) {
+    var score = Number(scoreCard.textContent);
+    scoreCard.textContent = ++score;
+}
 
-    button.addEventListener("mouseleave", () => {
-        leftEmoji.classList.remove("visible");
+function playRound(playerSelection, computerSelection) {
+        const result = playRoundHelper(playerSelection, computerSelection);
+        switch (result) {
+            case "win": addPoint(playerScoreCard);
+                break;
+            case "tie": break;
+            case "lose": addPoint(computerScoreCard);
+                break;
+        }
+        handleResult();
+    }
+
+function changeEmoji(selection, emoji) {
+    switch(selection) {
+        case "rock": emoji.innerHTML = "✊";
+        break;
+        case "paper": emoji.innerHTML = "✋";
+        break;
+        case "scissors": emoji.innerHTML = "✌️";
+        break;
+    }
+}
+
+function removeTransition(e) {
+    this.classList.remove("chosenEmoji");
+}
+
+emojis.forEach((emoji) => emoji.addEventListener("transitionend", removeTransition));
+
+buttons.forEach((button) => {
+
+    button.addEventListener("click", () => {
+        const playerSelection = button.id;
+        const computerSelection = computerPlay();
+        changeEmoji(playerSelection, leftEmoji);
+        changeEmoji(computerSelection, rightEmoji);
+        emojis.forEach((emoji) => {
+            emoji.classList.add("visible", "chosenEmoji");
+        });
+        playRound(playerSelection, computerSelection);
     });
 });
-
-// game();

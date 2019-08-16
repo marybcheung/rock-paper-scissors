@@ -1,6 +1,7 @@
 body {
     font-family: 'Courier New', Courier, monospace;
     text-align: center;
+    background-color: aliceblue;
 }
 
 .scoreboard {
@@ -42,6 +43,11 @@ h1, .score {
 .emoji {
     visibility: hidden;
     width: 120px;
+    transition: transform 0.2s;
+}
+
+.chosenEmoji {
+    transform: scale(1.1);
 }
 
 .buttons {
@@ -60,6 +66,15 @@ button {
     font-weight: bold;
     font-size: 110%;
     width: 100px;
+}
+
+button:hover {
+    background-color: gray;
+    color: white;
+}
+
+button:focus {
+    outline: none;
 }
 
 .visible {
