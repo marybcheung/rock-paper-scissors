@@ -67,6 +67,10 @@ h1, .score {
     color:darkgray;
 }
 
+.play-area {
+    height: 60px;
+}
+
 button {
     -moz-appearance: none;
     -webkit-appearance: none;
