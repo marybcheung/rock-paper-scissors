@@ -92,3 +92,7 @@ button:focus {
 .visible {
     visibility:visible;
 }
+
+p {
+    font-weight: bold;
+}
