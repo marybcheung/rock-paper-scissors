@@ -1,0 +1,67 @@
+body {
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+}
+
+.scoreboard {
+    margin-top: 150px;
+}
+
+h1, .score {
+    display: inline-block;
+}
+
+
+.score {
+    background-color: grey;
+    width: 50px;
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    border-style: solid;
+    border: 6px solid black;
+}
+
+#left-score {
+    border-right: 3px solid black;
+}
+
+#right-score {
+    border-left: 3px solid black;
+}
+
+.emoji, .line {
+    font-size: 100px;
+    display: inline-block;
+    text-align: center;
+}
+
+.emojis-line {
+    width: 100%;
+}
+.emoji {
+    visibility: hidden;
+    width: 120px;
+}
+
+.buttons {
+    margin-top: 40px;
+}
+
+.line {
+    font-weight: bold;
+    color:darkgray;
+}
+
+button {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 110%;
+    width: 100px;
+}
+
+.visible {
+    visibility:visible;
+}
