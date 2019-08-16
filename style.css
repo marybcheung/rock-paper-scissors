@@ -77,7 +77,7 @@ button {
     font-family: inherit;
     font-weight: bold;
     font-size: 110%;
-    width: 100px;
+    width: 6em;
 }
 
 button:hover {
