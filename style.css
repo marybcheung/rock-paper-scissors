@@ -1,11 +1,19 @@
+html, body {
+    height: 100%;
+}
+
+html {
+    display: table;
+    margin: auto;
+}
+
 body {
     font-family: 'Courier New', Courier, monospace;
     text-align: center;
     background-color: aliceblue;
-}
-
-.scoreboard {
-    margin-top: 150px;
+    display: table-cell;
+    vertical-align: middle;
+    width: 100%;
 }
 
 h1, .score {
