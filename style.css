@@ -83,6 +83,7 @@ button {
 button:hover {
     background-color: gray;
     color: white;
+    cursor: pointer;
 }
 
 button:focus {

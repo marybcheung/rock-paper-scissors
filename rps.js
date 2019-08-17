@@ -5,6 +5,19 @@ var emojis = document.querySelectorAll(".emoji");
 var playerScoreCard = document.querySelector("#left-score");
 var computerScoreCard = document.querySelector("#right-score");
 var p = document.querySelector("p");
+var playAgain = document.createElement("button");
+var playArea = document.querySelector(".play-area");
+
+playAgain.textContent = "Play again?";
+
+playAgain.addEventListener("click", () => {
+    playerScoreCard.textContent = 0;
+    computerScoreCard.textContent = 0;
+    p.textContent = "First to 5 points wins!";
+    playArea.removeChild(playAgain);
+    emojis.forEach((emoji) => emoji.classList.remove("visible"));
+    buttons.forEach((button) => button.style.display = "initial");
+});
 
 // randomly returns 0, 1, or 2
 function rNG3() {
@@ -43,9 +56,9 @@ function handleResult() {
     const playerScore = Number(playerScoreCard.textContent);
     const computerScore = Number(computerScoreCard.textContent);
     if (playerScore == 5 || computerScore == 5) {
-        if (playerScore > computerScore)  p.textContent = "You won! ";
-        else p.textContent = "You lost. ";
-        p.textContent += " Refresh to play again."
+        if (playerScore > computerScore) p.textContent = "You won! :)";
+        else p.textContent = "You lost. :(";
+        playArea.appendChild(playAgain);
         buttons.forEach((button) => button.style.display = "none");
     }
 }
@@ -56,16 +69,16 @@ function addPoint(scoreCard) {
 }
 
 function playRound(playerSelection, computerSelection) {
-        const result = playRoundHelper(playerSelection, computerSelection);
-        switch (result) {
-            case "win": addPoint(playerScoreCard);
-                break;
-            case "tie": break;
-            case "lose": addPoint(computerScoreCard);
-                break;
-        }
-        handleResult();
+    const result = playRoundHelper(playerSelection, computerSelection);
+    switch (result) {
+        case "win": addPoint(playerScoreCard);
+            break;
+        case "tie": break;
+        case "lose": addPoint(computerScoreCard);
+            break;
     }
+    handleResult();
+}
 
 function changeEmoji(selection, emoji) {
     switch(selection) {
@@ -78,14 +91,13 @@ function changeEmoji(selection, emoji) {
     }
 }
 
-function removeTransition(e) {
+function removeTransition() {
     this.classList.remove("chosenEmoji");
 }
 
 emojis.forEach((emoji) => emoji.addEventListener("transitionend", removeTransition));
 
 buttons.forEach((button) => {
-
     button.addEventListener("click", () => {
         const playerSelection = button.id;
         const computerSelection = computerPlay();
